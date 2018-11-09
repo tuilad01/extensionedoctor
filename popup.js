@@ -28,7 +28,7 @@ function GenColumn(patient, index) {
     row.append(createColumn(""));
     row.append(createColumn(""));
     row.append(createColumn(patient.phone));
-    row.append(createColumn(patient.strDate));
+    row.append(createColumn(patient.createDate));
     row.append(createColumn(patient.address + ", " + patient.ward + ", " + patient.district));
     row.append(createColumn(patient.employeeSell));
     row.append(createColumn(""));

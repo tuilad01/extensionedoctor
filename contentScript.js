@@ -1,4 +1,5 @@
 var now = new Date();
+now.setDate(now.getDate() + 1);
 var strDate = now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear();
 
 //console.log(strDate);
@@ -44,11 +45,17 @@ function main() {
         var tempInfo = $(patient).children().last();
 
         objDefault.name = handleString($(patient).children(":first").text());
-        objDefault.phone = handleString(tempInfo.find("p > a").text());
-        objDefault.address = handleString(tempInfo.find("p:nth-child(2)").text());
-        objDefault.ward = handleString(tempInfo.find("p:nth-child(3)").text());
-        objDefault.district = handleString(tempInfo.find("p:nth-child(4)").text());
-        objDefault.city = handleString(tempInfo.find("p:nth-child(5)").text());
+        objDefault.phone = handleString(tempInfo.find("p:first > a").text());
+        
+        var indexPagraph = 2;
+        if (tempInfo.find("p").length == 6) {
+            indexPagraph = 3;
+        }
+
+        objDefault.address = handleString(tempInfo.find("p:nth-child(" + (indexPagraph++) + ")").text());
+        objDefault.ward = handleString(tempInfo.find("p:nth-child(" + (indexPagraph++) + ")").text());
+        objDefault.district = handleString(tempInfo.find("p:nth-child(" + (indexPagraph++) + ")").text());
+        objDefault.city = handleString(tempInfo.find("p:nth-child(" + indexPagraph + ")").text());
 
         //console.log(patientInfo);
         /****** END ******/
@@ -57,7 +64,7 @@ function main() {
         var services = $(row).find("td:nth-child(2)").children("div").first().find("ol > li");
         var nameService = [];
         $.each(services, function (index, element) {
-            nameService.push(handleString($(element).text()));
+            nameService.push(mapServiceName(handleString($(element).text())));
         });
 
         objDefault.nameServices = nameService;
@@ -127,4 +134,38 @@ function capitalizeFirstLetter(string) {
         arrString[i] = arrString[i].charAt(0).toUpperCase() + arrString[i].slice(1).toLowerCase();
     }
     return arrString.join(" ");
+}
+
+function mapServiceName(nameService) {
+    var temp = nameService.toLowerCase();
+    switch (temp) {
+        case "gói khám sức khoẻ cơ bản":
+            return "Gói KSK cơ bản";
+        case "gói khám sức khỏe cơ bản":
+            return "Gói KSK cơ bản";
+        case "gói khám chuyên khoa nữ":
+            return "ck nữ";
+        case "xét nghiệm tầm soát ung thư nữ":
+            return "TSUT";
+        case "xét nghiệm tầm soát ung thư (nữ)":
+            return "TSUT";
+        case "xét nghiệm tầm soát ung thư (nam)":
+            return "TSUT";
+        case "gói khám sức khoẻ cao cấp":
+            return "Gói KSK cao cấp";
+        case "gói khám sức khỏe cao cấp":
+            return "Gói KSK cao cấp";
+        case "gói xét nghiệm tổng quát":
+            return "Gói XNTQ";
+        case "xét nghiệm vi khuẩn viêm loét dạ dày (helicobacter pylori, h.pylori)":
+            return "Helicobacter pylori, H.pylori";
+        case "tư vấn xét nghiệm tại nhà - miễn phí!":
+            return "Tư vấn XN tại nhà";
+        case "gói xét nghiệm gan":
+            return "Gói XN Gan";
+        // case "gói khám tổng quát cơ bản":
+        //     return "Gói KTQCB"
+        default:
+            return nameService;
+    }
 }
