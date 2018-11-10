@@ -117,7 +117,7 @@ function main() {
     } catch (error) {
         
     }
-    return data;
+    return data.sort(compare);
 }
 
 function handleString(str) {
@@ -138,6 +138,14 @@ function capitalizeFirstLetter(string) {
         arrString[i] = arrString[i].charAt(0).toUpperCase() + arrString[i].slice(1).toLowerCase();
     }
     return arrString.join(" ");
+}
+
+function compare(a,b) {
+  if (a.district < b.district)
+    return -1;
+  if (a.district > b.district)
+    return 1;
+  return 0;
 }
 
 function mapServiceName(nameService) {
